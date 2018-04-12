@@ -1,0 +1,6 @@
+{
+	"headers": {
+		"contentType": "application/json",
+		"testHeader": "valueOfTestHeader"
+	}
+}

@@ -1,29 +1,48 @@
 Feature: Make requests to an endpoint
+	Background:
+		Given Client wrapper is initialised
 
 	Scenario: Google returns a 200 when given URL
-		When User makes GET request to https://www.google.co.uk
-		Then Response code is 200
-
-	Scenario: Google returns a 200 when given IP address
-		When User makes GET request to 8.8.8.8
+		Given Request URL is https://www.google.co.uk
+		And Request type is GET
+		When User makes request
 		Then Response code is 200
 
 	Scenario: HttpBin returns a 200 when making POST request
-		When User makes POST request to httpbin.org/post
+		Given Request URL is http://httpbin.org/post
+		And Request type is POST
+		And Request body is testBody.json
+		When User makes request
 		Then Response code is 200
 
 	Scenario: HttpBin returns a 200 when making PUT request
-		When User makes PUT request to httpbin.org/put
+		Given Request URL is http://httpbin.org/put
+		And Request type is PUT
+		And Request body is testBody.json
+		When User makes request
 		Then Response code is 200
 
 	Scenario: HttpBin returns a 200 when making DELETE request
-		When User makes delete request to httpbin.org/delete
+		Given Request URL is http://httpbin.org/delete
+		And Request type is DELETE
+		And Request body is testBody.json
+		When User makes request
 		Then Response code is 200
 		
 	Scenario: Verify response body of POST request
-		When User makes POST request to httpbin.org/post with body testBody.json
-		Then Response code is 200 and body is testBody.json
+		Given Request URL is http://httpbin.org/post
+		And Request type is POST
+		And Request body is testBody.json
+		When User makes request
+		Then Response code is 200
+		#TODO: Extract body from actual body
+		And Response body is testBody.json
 
 	Scenario: Verify headers
-		When User makes GET request to httpbin.org/headers with headers testHeaders.json
-		Then Response code is 200 and body is testHeaders.json
+		Given Request URL is http://httpbin.org/headers
+		And Request type is GET
+		And Request headers is testHeaders.json
+		When User makes request
+		Then Response code is 200
+		#TODO: Headers in different location
+		And Response body is testHeaders.json

@@ -1,0 +1,3 @@
+example:
+  headerPath: example/src/test/resources/testFiles/headers/
+  bodyPath: example/src/test/resources/testFiles/body/
