@@ -1,0 +1,26 @@
+{
+	"args": {
+	},
+	"data": "{\n\t\"name\": \"Bob\",\n\t\"level\": 12,\n\t\"class\": \"Paladin\",\n\t\"ac\": 19\n}",
+	"files": {
+	},
+	"form": {
+	},
+	"headers": {
+		"Accept": "*/*",
+		"Accept-Encoding": "gzip,deflate",
+		"Connection": "close",
+		"Content-Length": "64",
+		"Content-Type": "text/plain; charset=ISO-8859-1",
+		"Host": "httpbin.org",
+		"User-Agent": "Apache-HttpClient/4.5.2 (Java/1.8.0_161)"
+	},
+	"json": {
+		"ac": 19,
+		"class": "Paladin",
+		"level": 12,
+		"name": "Bob"
+	},
+	"origin": "109.232.57.94",
+	"url": "http://httpbin.org/post"
+}

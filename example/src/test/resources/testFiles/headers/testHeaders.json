@@ -1,6 +1,6 @@
 {
 	"headers": {
-		"contentType": "application/json",
-		"testHeader": "valueOfTestHeader"
+		"Content-Type": "application/json",
+		"Test-Header": "valueOfTestHeader"
 	}
 }

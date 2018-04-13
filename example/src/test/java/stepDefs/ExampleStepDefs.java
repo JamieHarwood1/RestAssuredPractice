@@ -9,6 +9,7 @@ import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.stereotype.Component;
@@ -89,7 +90,8 @@ public class ExampleStepDefs
 	{
 		final String expectedBody = new String(Files.readAllBytes(Paths.get(exampleProperties.getBodyPath() +
 																			bodyPath)));
-		Assert.assertEquals(expectedBody, clientWrapper.getResponseBody());
+
+		JSONAssert.assertEquals(expectedBody, clientWrapper.getResponseBody(), false);
 	}
 
 	@Then("^Response code is (.*)$")
