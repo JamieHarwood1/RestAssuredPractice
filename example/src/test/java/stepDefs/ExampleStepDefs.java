@@ -2,12 +2,15 @@ package stepDefs;
 
 import client.ClientWrapper;
 import configuration.ExampleConfig;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +82,13 @@ public class ExampleStepDefs
 		clientWrapper.setRequestHeaders(headers);
 	}
 
+	@And("^Proxy is (.*):(\\d+)$")
+	public void proxyIs(final String host, final int port) throws Throwable
+	{
+		clientWrapper.setProxyHost(host);
+		clientWrapper.setProxyPort(port);
+	}
+
 	@When("^User makes request$")
 	public void userMakesRequest() throws Throwable
 	{
@@ -98,5 +108,14 @@ public class ExampleStepDefs
 	public void responseCodeIsCode(final String expectedCode) throws Throwable
 	{
 		Assert.assertEquals(expectedCode, String.valueOf(clientWrapper.getResponseCode()));
+	}
+
+	@And("^Response body (.*) attribute is (.*)$")
+	public void responseBodyAttributeIs(final String attributeName, final String attributeValuePath) throws Throwable
+	{
+		final String expectedValue = new String(Files.readAllBytes(Paths.get(exampleProperties.getBodyPath() +
+																			 attributeValuePath)));
+		final String actualValue = new JSONObject(clientWrapper.getResponseBody()).getString(attributeName);
+		JSONAssert.assertEquals(expectedValue, actualValue, false);
 	}
 }

@@ -2,8 +2,11 @@ package client;
 
 import io.restassured.http.Headers;
 import io.restassured.response.ResponseOptions;
+import io.restassured.specification.RequestSpecification;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 
@@ -19,6 +22,9 @@ public class ClientWrapper
 	private int responseCode;
 	private String responseBody;
 
+	private String proxyHost;
+	private int proxyPort;
+
 	public void initialise()
 	{
 		requestUrl = null;
@@ -26,50 +32,64 @@ public class ClientWrapper
 		requestBody = null;
 		requestHeaders = new Headers();
 
+		proxyHost = null;
+		proxyPort = -1;
+
 		responseCode = -1;
 		responseBody = null;
 	}
 
 	public void makeRequest()
 	{
+		final RequestSpecification request;
+
 		final ResponseOptions response;
+
+		if (Objects.isNull(proxyHost) || proxyPort == -1)
+		{
+			// No proxy
+			request = given().headers(requestHeaders);
+		}
+		else
+		{
+			// Use proxy
+			request = given().proxy(proxyHost, proxyPort)
+							 .headers(requestHeaders);
+		}
 
 		switch (requestType)
 		{
 			case "GET":
 			{
-				response = given().headers(requestHeaders)
-								  .get(requestUrl)
+				response = request.get(requestUrl)
 								  .thenReturn();
 				break;
 			}
 			case "POST":
 			{
-				response = given().headers(requestHeaders)
-								  .body(requestBody)
+				response = request.body(requestBody)
 								  .post(requestUrl)
 								  .thenReturn();
 				break;
 			}
 			case "PUT":
 			{
-				response = given().headers(requestHeaders)
-								  .body(requestBody)
+				response = request.body(requestBody)
 								  .put(requestUrl)
 								  .thenReturn();
 				break;
 			}
 			case "DELETE":
 			{
-				response = given().headers(requestHeaders)
-								  .body(requestBody)
+				response = request.body(requestBody)
 								  .delete(requestUrl)
 								  .thenReturn();
 				break;
 			}
 			default:
 			{
-				throw new IllegalArgumentException("There is no test case for given request type: " + requestType);
+				throw new IllegalArgumentException("There is no test case for requestSpec request type: " +
+												   requestType);
 			}
 		}
 

@@ -35,4 +35,4 @@ Feature: Make requests to an endpoint
 		And Request body is requestBody.json
 		When User makes request
 		Then Response code is 200
-		And Response body is responseBody.json
+		And Response body data attribute is requestBody.json
